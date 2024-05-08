@@ -32,6 +32,8 @@ print(d)
 
 #FALTA:
 #GENERALIZAR LA ENTRADA DEL KERNEL
+
+#Ya realizado:
 #GENERALIZAR LA CREACION DE y (creo que se haria multiplicando a cada numero del slicing por kernel.shape[0]//2)
 
 x = np.array([
@@ -42,15 +44,16 @@ x = np.array([
 ])
 
 
-kernel = np.array([
-    [1/9,1/9,1/9],
-    [1/9,1/9,1/9],
-    [1/9,1/9,1/9]
-])
+kernel = (1 / 256.0) * np.array([[1, 4, 6, 4, 1],
+                                   [4, 16, 24, 16, 4],
+                                   [6, 24, 36, 24, 6],
+                                   [4, 16, 24, 16, 4],
+                                   [1, 4, 6, 4, 1]])
 
+coef = kernel.shape[0]//2
 
 d_copy = copy.deepcopy(d)   #esto genera una copia completa de la matriz a la cual le aplicaremos el kernel
-y = d_copy[1:-1,1:-1]   #esto hace que Y apunte solo al sector de d sin los bordes (hay que modificarlo para hacerlo generico)
+y = d_copy[1*coef:-1*coef,1*coef:-1*coef]   #esto hace que Y apunte solo al sector de d sin los bordes (hay que modificarlo para hacerlo generico)
 
 
 #De esta forma se puede hacer el kernel e ignorar los bordes
