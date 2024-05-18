@@ -1,6 +1,5 @@
 import cv2 as cv
 import numpy as np
-import copy
 
 
 #INICIO EJERCICIO 1
@@ -8,64 +7,24 @@ import copy
 #FALTA:
 #GENERALIZAR LA ENTRADA DE LA IMAGEN
 
-img =  cv.imread('D:\\ProyectoPython\\Imagenes\\nada evangelizar ven a mi.jpg')
-img2 = cv.imread('D:\\ProyectoPython\\Imagenes\\nada evangelizar ven a mi.jpg',0)
-a,b,c = cv.split(img)
+img =  cv.imread('D:\\ProyectoPython\\Imagenes\\Computadora.jpg')
+b,g,r = cv.split(img)
 
 
-d = np.zeros((a.shape), np.uint16)
-d += a
-d += b
-d += c
-d //= 3
-d *=256
+d=r*0.3 + g*0.59 + b*0.11   #Grayscale con promedio pesado
+
+d_normalized = np.clip(d,0,255)  #Esta linea es para asegurar que los valores de la matriz estan entre 0-255 porque sino se van a generar errores en el imshow
+d_uint8 = d_normalized.astype(np.uint8)
+
+print(d_uint8)
 
 cv.imshow("imgColor",img)
-cv.imshow("imgGris", d)
-cv.imshow("imaGris2",img2)
-
-print(d)
-
-#FIN EJERCICIO 1
-
-#INICIO EJERCICIO 2
-
-#FALTA:
-#GENERALIZAR LA ENTRADA DEL KERNEL
-
-#Ya realizado:
-#GENERALIZAR LA CREACION DE y (creo que se haria multiplicando a cada numero del slicing por kernel.shape[0]//2)
-
-x = np.array([
-    [1,2,3,90],
-    [4,5,6,90],
-    [7,8,9,90],
-    [1,2,3,90]
-])
-
-
-kernel = (1 / 256.0) * np.array([[1, 4, 6, 4, 1],
-                                   [4, 16, 24, 16, 4],
-                                   [6, 24, 36, 24, 6],
-                                   [4, 16, 24, 16, 4],
-                                   [1, 4, 6, 4, 1]])
-
-coef = kernel.shape[0]//2
-
-d_copy = copy.deepcopy(d)   #esto genera una copia completa de la matriz a la cual le aplicaremos el kernel
-y = d_copy[1*coef:-1*coef,1*coef:-1*coef]   #esto hace que Y apunte solo al sector de d sin los bordes (hay que modificarlo para hacerlo generico)
-
-
-#De esta forma se puede hacer el kernel e ignorar los bordes
-for indice,valor in (np.ndenumerate(y)):
-    y[indice]= np.sum(d[indice[0]:indice[0] + kernel.shape[0], indice[1]:indice[1] + kernel.shape[0]]*kernel)
-      
-print(d_copy)
-cv.imshow("ImgAlterada",d_copy)
+cv.imshow("imgGris", d_uint8)
+cv.imwrite("Computadora_grises.jpg",d_uint8)
 
 cv.waitKey(0)
 
 cv.destroyAllWindows()
 
+#FIN EJERCICIO 1
 
-#FIN EJERCICIO 2
