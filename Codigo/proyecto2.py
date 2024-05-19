@@ -7,13 +7,12 @@ from pathlib import Path
 
 def levantar_imagen_grayscale(image_path):
     if not image_path.exists():
-        image_path = input("Hubo un error en el reconocimiento de la ruta de la imagen. Por favor ingrese la ruta completa de la imagen:\n")
+        image_path = input("\nHubo un error en el reconocimiento de la ruta de la imagen. Por favor ingrese la ruta completa de la imagen:\n")
     
     aux = cv.imread(str(image_path), cv.IMREAD_GRAYSCALE)
     return aux
     
 
-#Inicio de cambios
 Desenfoque_Gaussiano = (1 / 256.0)*np.array([
     [1, 4, 6, 4, 1],
     [4, 16, 24, 16, 4],
@@ -46,7 +45,7 @@ dic_kernels = {
     'Desenfoque Normalizado' : Desenfoque_Normalizado,
     'Deteccion Ejes Verticales' : Deteccion_Vertical,
     'Deteccion Ejes Horizontales' : Deteccion_Horizontal,
-    'Sharpen' : Sharpen
+    'Sharpening' : Sharpen
 }
 
 
@@ -56,6 +55,11 @@ ennumerada cual de los kernels quiere y en base a ese numero elegido acceder a l
 esa posicion y con esa key acceder a la matriz. El print de las opciones se puede hacer
 con un for in dic_kernels.key() o algo así"""
 
+print('Elegir filtro a aplicar:')
+for i,k in enumerate(dic_kernels.keys(),start=1):
+    print(i,' - ',k,'\n')
+key_kernel = lista_keys[int(input())-1]
+
 image_path = Path('/ProyectoPython/Imagenes/Computadora_grises.jpg')
 
 d = levantar_imagen_grayscale(image_path) 
@@ -63,9 +67,8 @@ d = levantar_imagen_grayscale(image_path)
 mascara_booleana = np.zeros(d.shape, dtype=bool)
 
 
-#Fin de cambios
 
-kernel = dic_kernels['Deteccion Ejes Horizontales']#Modifiqué
+kernel = dic_kernels[key_kernel]
 
 coef = kernel.shape[0]//2
 
@@ -78,7 +81,7 @@ mascara_booleana[-1:-coef-1:-1,:] = True
 mascara_booleana[:,:coef] = True
 mascara_booleana[:,-1:-coef-1:-1] = True
 
-bordes = int(input("Indique mediante el respectivo numero que desea hacer con los bordes en la imagen con el filtro:\n1-Poner los bordes en negro, 2-Poner los bordes en blanco, 3-Mantener los bordes\n"))
+bordes = int(input("\nIndique mediante el respectivo numero que desea hacer con los bordes en la imagen con el filtro:\n1-Poner los bordes en negro, 2-Poner los bordes en blanco, 3-Mantener los bordes\n"))
 
 #De esta forma se puede hacer el kernel e ignorar los bordes
 for indice,valor in (np.ndenumerate(y)):
