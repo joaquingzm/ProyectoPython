@@ -1,5 +1,6 @@
 import cv2 as cv
 import numpy as np
+from pathlib import Path
 
 
 #INICIO EJERCICIO 1
@@ -7,14 +8,21 @@ import numpy as np
 #FALTA:
 #GENERALIZAR LA ENTRADA DE LA IMAGEN
 
-img =  cv.imread('D:\\ProyectoPython\\Imagenes\\Computadora.jpg')
+nombre_imagen = input("Ingrese el nombre de una imagen junto al formato: ")
+
+image_path = str(Path(f'/ProyectoPython/Imagenes/{nombre_imagen}'))
+
+img =  cv.imread(image_path)
 b,g,r = cv.split(img)
 
 
-d=r*0.3 + g*0.59 + b*0.11   #Grayscale con promedio pesado
+d_uint8= r//3 + g//3 + b//3   #Grayscale con promedio pesado
 
-d_normalized = np.clip(d,0,255)  #Esta linea es para asegurar que los valores de la matriz estan entre 0-255 porque sino se van a generar errores en el imshow
-d_uint8 = d_normalized.astype(np.uint8)
+h=r*0.3 + g*0.59 + b*0.11
+
+d_uint8 = d_uint8.astype(np.uint8)
+
+print(d_uint8)
 
 print(d_uint8)
 
