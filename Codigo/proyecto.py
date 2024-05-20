@@ -20,7 +20,6 @@ if img_predeterminada==2:
     eleccion_img =  input('Ingrese nombre de una imagen, que se encuentre dentro de la carpeta Imagenes, junto con su formato:\n->')
 else:
     eleccion_img = 'Foto.jpg'
-elec_g = int(input('Seleccione el tipo de conversion a escala de grises segun el respectivo numero:\n1-Promedio, 2-Promedio pesado\n->'))
 
 
 #Levantando la imagen
@@ -32,7 +31,7 @@ computadora en donde se este ejecutando el programa (por ejemplo Windows o Linux
 
 image_path = (Path(f'/ProyectoPython/Imagenes/{eleccion_img}'))
 img,b,g,r = levantar_imagen(image_path)
-
+elec_g = int(input('Seleccione el tipo de conversion a escala de grises segun el respectivo numero:\n1-Promedio, 2-Promedio pesado\n->'))
 
 #Procesando imagen, operación generalizada para distintas escalas de grises
 """El calculo se realiza con las operaciones entre matrices ya integradas en la libreria
@@ -46,7 +45,7 @@ img_gris = img_gris.astype(np.uint8)
 
 #Mostrando imagen
 
-eleccion_img = eleccion_img[:-4] + 'Gris' + eleccion_img[-4:]
+eleccion_img = eleccion_img.replace('.', 'Gris.') 
 cv.imshow("imgColor",img)
 cv.imshow("imgGris", img_gris)
 cv.imwrite(f"Imagenes/{eleccion_img}",img_gris)
